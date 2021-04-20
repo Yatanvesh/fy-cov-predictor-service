@@ -37,7 +37,7 @@ def predictCov():
     url, filename = (data['url'], "dog.jpg")
     try: urllib.URLopener().retrieve(url, filename)
     except: urllib.request.urlretrieve(url, filename)
-    input_image = Image.open(filename)
+    input_image = Image.open(filename).convert('RGB')
 
     input_tensor = preprocess(input_image)
     input_batch = input_tensor.unsqueeze(0) 
@@ -54,6 +54,8 @@ def predictCov():
     return jsonify({'result':index})
 
 if __name__ == '__main__':
-    modelfile = '../SavedModels/covBinarySqueezeNet.pth'
+    # modelfile = '../research/SavedModels/squeezenet/covBinarySqueezeNet1.pth'
+    modelfile = './covBinarySqueezeNet1.pth'
+
     model = torch.load(modelfile, map_location=torch.device('cpu'))
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, port=3002)
